@@ -5,15 +5,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Bala {
     // variables
-    Texture texture;
+    static Texture texture = new Texture("bala.png");
     float x, y, w , h, v;
 
     // para crear la imagen de bala y sus valores.
     Bala(float xNave, float yNave){
-        texture = new Texture("bala.png");
         w = 10;
         h = 50;
-        x = xNave-w/2;
+        x = xNave - w/2;
         y = yNave;
         v = 20;
     }
