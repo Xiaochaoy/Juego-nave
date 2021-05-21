@@ -34,9 +34,11 @@ public class Nave extends ApplicationAdapter {
 	boolean pausa;
 	boolean start;
 	Sonido sonido;
+	Control control;
 
 	@Override
 	public void create () {
+		control = new Control();
 		sonido = new Sonido();
 		batch = new SpriteBatch();
 		bitmapFont = new BitmapFont();
@@ -78,8 +80,11 @@ public class Nave extends ApplicationAdapter {
 
 			Temporizador.tiempoJuego += 1;
 
-			if (Gdx.input.isKeyJustPressed(Input.Keys.P)) pausa = !pausa;
-			if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) start = true;
+			if (start) if (Gdx.input.isKeyJustPressed(Input.Keys.P)) pausa = !pausa;
+			if (!start && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+				start = true;
+				sonido.gameover.pause();
+			}
 
 		if (temporizadorNuevoEnemigo.suena()) enemigos.add(new Enemigo());
 			if (temporizadorNuevoEnemigo2.suena()) enemigos2.add(new Enemigo2());
@@ -212,6 +217,7 @@ public class Nave extends ApplicationAdapter {
 
 			if(gameover) {
 				sonido.music.stop();
+				sonido.gameover.play();
 				int result = scoreboard.update(caza.puntos);
 				if(result == 1) {
 					inicializarJuego();
@@ -229,19 +235,20 @@ public class Nave extends ApplicationAdapter {
 		batch.begin();
 		if(!start){
 			batch.draw(fondo.animacion.getFrame(Temporizador.tiempoJuego), 0, 0);
+			bitmapFont.draw(batch, "P = pausa + Info ", 30, 600);
 		}else{
 			fondo.render(batch);
 			caza.render(batch);
+			bitmapFont.draw(batch, "VIDAS: "+caza.vidas, 30, 600);
+			bitmapFont.draw(batch, "PUNTOS: "+caza.puntos, 30, 550);
 		}
 		for(Enemigo enemigo : enemigos) enemigo.render(batch);
 		for(Enemigo2 enemigo2 : enemigos2) enemigo2.render(batch);
 		for(Enemigo3 enemigo3 : enemigos3) enemigo3.render(batch);
 		if (pausa){
-			bpausa.draw(batch,"PAUSA", 450, 350);
+			bpausa.draw(batch,"PAUSA", 450, 550);
+			control.render(batch);
 		}
-
-		bitmapFont.draw(batch, "VIDAS: "+caza.vidas, 30, 600);
-		bitmapFont.draw(batch, "PUNTOS: "+caza.puntos, 30, 550);
 		if (gameover){
 			scoreboard.render(batch, bitmapFont);
 		}

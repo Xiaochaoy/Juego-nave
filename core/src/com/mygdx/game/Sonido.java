@@ -9,4 +9,5 @@ public class Sonido {
     public Sound danyo = Gdx.audio.newSound(Gdx.files.internal("hurt.mp3"));
     public Sound explotar = Gdx.audio.newSound(Gdx.files.internal("explota.mp3"));
     public Music music = Gdx.audio.newMusic(Gdx.files.internal("Battleship.ogg"));
+    public Music gameover = Gdx.audio.newMusic(Gdx.files.internal("Gameover.mp3"));
 }

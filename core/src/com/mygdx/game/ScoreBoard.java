@@ -77,7 +77,7 @@ public class ScoreBoard {
                 if(index == i){
                     font.setColor(Color.RED);
                 }
-                font.draw(batch, ""+ nombre[i], 480+40*i, 280);
+                font.draw(batch, ""+ nombre[i], 470+40*i, 280);
                 font.setColor(Color.WHITE);
             }
             font.getData().setScale(2);
