@@ -91,9 +91,6 @@ public class Nave extends ApplicationAdapter {
 			if (temporizadorNuevoEnemigo3.suena()) enemigos3.add(new Enemigo3());
 			if (start) {
 				if (!pausa) {
-					batch.setColor(1,1,1,1f);
-					bitmapFont.setColor(Color.WHITE);
-					sonido.music.play();
 					if (!gameover) {
 						caza.update();
 						for (Enemigo enemigo : enemigos)
@@ -102,21 +99,7 @@ public class Nave extends ApplicationAdapter {
 							enemigo2.update();
 						for (Enemigo3 enemigo3 : enemigos3)
 							enemigo3.update();
-					}else{
-						sonido.music.stop();
-						sonido.gameover.play();
-						int result = scoreboard.update(caza.puntos);
-						if(result == 1) {
-								inicializarJuego();
-						} else if (result == 2) {
-								Gdx.app.exit();
-						}
 					}
-				}else{
-					batch.setColor(1,1,1,0.25f);
-					bitmapFont.setColor(Color.BLUE);
-					sonido.music.pause();
-
 				}
 			}
 			for (Enemigo enemigo : enemigos) {
@@ -215,7 +198,15 @@ public class Nave extends ApplicationAdapter {
 				}
 			}
 
-
+			if (pausa){
+				batch.setColor(1,1,1,0.25f);
+				bitmapFont.setColor(Color.BLUE);
+				sonido.music.pause();
+			}else{
+				batch.setColor(1,1,1,1f);
+				bitmapFont.setColor(Color.WHITE);
+				sonido.music.play();
+			}
 
 			for (Bala bala : balasAEliminar) caza.balas.remove(bala);
 			for (Enemigo enemigo : enemigosAEliminar) enemigos.remove(enemigo);
@@ -224,7 +215,16 @@ public class Nave extends ApplicationAdapter {
 			balasAEliminar.clear();
 			enemigosAEliminar.clear();
 
-
+			if(gameover) {
+				sonido.music.stop();
+				sonido.gameover.play();
+				int result = scoreboard.update(caza.puntos);
+				if(result == 1) {
+					inicializarJuego();
+				} else if (result == 2) {
+					Gdx.app.exit();
+				}
+			}
 	}
 	@Override
 	public void render () {
