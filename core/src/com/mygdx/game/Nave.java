@@ -83,7 +83,7 @@ public class Nave extends ApplicationAdapter {
 		if (start) if (Gdx.input.isKeyJustPressed(Input.Keys.P)) pausa = !pausa;
 		if (!start && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
 			start = true;
-			sonido.gameover.pause();
+			sonido.gameover.stop();
 		}
 
 		if (temporizadorNuevoEnemigo.suena()) enemigos.add(new Enemigo());
