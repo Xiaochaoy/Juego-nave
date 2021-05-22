@@ -78,153 +78,150 @@ public class Nave extends ApplicationAdapter {
 
 	void update() {
 
-			Temporizador.tiempoJuego += 1;
+		Temporizador.tiempoJuego += 1;
 
-			if (start) if (Gdx.input.isKeyJustPressed(Input.Keys.P)) pausa = !pausa;
-			if (!start && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
-				start = true;
-				sonido.gameover.pause();
-			}
+		if (start) if (Gdx.input.isKeyJustPressed(Input.Keys.P)) pausa = !pausa;
+		if (!start && Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
+			start = true;
+			sonido.gameover.pause();
+		}
 
 		if (temporizadorNuevoEnemigo.suena()) enemigos.add(new Enemigo());
-			if (temporizadorNuevoEnemigo2.suena()) enemigos2.add(new Enemigo2());
-			if (temporizadorNuevoEnemigo3.suena()) enemigos3.add(new Enemigo3());
-			if (start) {
-				if (!pausa) {
-					if (!gameover) {
-						caza.update();
-						for (Enemigo enemigo : enemigos)
-							enemigo.update();
-						for (Enemigo2 enemigo2 : enemigos2)
-							enemigo2.update();
-						for (Enemigo3 enemigo3 : enemigos3)
-							enemigo3.update();
-					}
+		if (temporizadorNuevoEnemigo2.suena()) enemigos2.add(new Enemigo2());
+		if (temporizadorNuevoEnemigo3.suena()) enemigos3.add(new Enemigo3());
+		if (start) {
+			if (!pausa) {
+				if (!gameover) {
+					caza.update();
+					for (Enemigo enemigo : enemigos) enemigo.update();
+					for (Enemigo2 enemigo2 : enemigos2) enemigo2.update();
+					for (Enemigo3 enemigo3 : enemigos3) enemigo3.update();
 				}
 			}
-			for (Enemigo enemigo : enemigos) {
-				for (Bala bala : caza.balas) {
-					if (Utils.solapan(bala.x, bala.y, bala.w, bala.h, enemigo.x, enemigo.y, enemigo.w, enemigo.h)) {
-						enemigo.vidas--;
-						sonido.danyo.play(10f);
-						if (enemigo.vidas == 0) {
-							caza.puntos++;
-							enemigo.explota = true;
-							enemigo.dead.activar();
-							sonido.explotar.play();
-							sonido.danyo.stop();
-						}
-						balasAEliminar.add(bala);
-						break;
-					}
-				}
-				if (!gameover && !caza.muerta && Utils.solapan(enemigo.x, enemigo.y, enemigo.w, enemigo.h, caza.x, caza.y, caza.w, caza.h)) {
-					caza.morir();
-					enemigosAEliminar.add(enemigo);
-					if (caza.vidas == 0) {
-						gameover = true;
-					}
-				}
-				if (enemigo.y < -80) enemigosAEliminar.add(enemigo);
-				if (enemigo.x < -20) enemigo.x = 1020;
-				if (enemigo.x > 1040) enemigo.x = -20;
-				if (enemigo.explota && enemigo.dead.suena()){
-					enemigosAEliminar.add(enemigo);
-				}
-			}
-			for (Enemigo2 enemigo2 : enemigos2) {
-				for (Bala bala : caza.balas) {
-					if (Utils.solapan(bala.x, bala.y, bala.w, bala.h, enemigo2.x, enemigo2.y, enemigo2.w, enemigo2.h)) {
-						enemigo2.vidas--;
-						sonido.danyo.play(10f);
-						if (enemigo2.vidas == 0) {
-							enemigo2.explota = true;
-							enemigo2.dead.activar();
-							caza.puntos += 2;
-							sonido.explotar.play();
-							sonido.danyo.stop();
-						}
-						balasAEliminar.add(bala);
-						break;
-					}
-				}
-				if (!gameover && !caza.muerta && Utils.solapan(enemigo2.x, enemigo2.y, enemigo2.w, enemigo2.h, caza.x, caza.y, caza.w, caza.h)) {
-					caza.morir();
-					enemigosAEliminar2.add(enemigo2);
-					if (caza.vidas == 0) {
-						gameover = true;
-					}
-				}
-				if (enemigo2.y < -80) enemigosAEliminar2.add(enemigo2);
-				if (enemigo2.x < -20) enemigo2.x = 1020;
-				if (enemigo2.x > 1040) enemigo2.x = -20;
-				if (enemigo2.explota && enemigo2.dead.suena()){
-					enemigosAEliminar2.add(enemigo2);
-				}
-			}
-			for (Enemigo3 enemigo3 : enemigos3) {
-				for (Bala bala : caza.balas) {
-					if (Utils.solapan(bala.x, bala.y, bala.w, bala.h, enemigo3.x, enemigo3.y, enemigo3.w, enemigo3.h)) {
-						enemigo3.vidas--;
-						sonido.danyo.play(10f);
-						if (enemigo3.vidas == 0) {
-							enemigo3.explota = true;
-							enemigo3.dead.activar();
-							caza.puntos += 4;
-							sonido.explotar.play();
-							sonido.danyo.stop();
-						}
-						balasAEliminar.add(bala);
-						break;
-					}
-				}
-				if (!gameover && !caza.muerta && Utils.solapan(enemigo3.x, enemigo3.y, enemigo3.w, enemigo3.h, caza.x, caza.y, caza.w, caza.h)) {
-					caza.morir();
-					enemigosAEliminar3.add(enemigo3);
-					if (caza.vidas == 0) {
-						gameover = true;
-					}
-				}
-				if (enemigo3.y < -80) enemigosAEliminar3.add(enemigo3);
-				if (enemigo3.x < -20) enemigo3.x = 1020;
-				if (enemigo3.x > 1040) enemigo3.x = -20;
-				if (enemigo3.explota && enemigo3.dead.suena()){
-					enemigosAEliminar3.add(enemigo3);
-				}
-			}
+		}
+		for (Enemigo enemigo : enemigos) {
 			for (Bala bala : caza.balas) {
-				if (bala.y > 590) {
+				if (Utils.solapan(bala.x, bala.y, bala.w, bala.h, enemigo.x, enemigo.y, enemigo.w, enemigo.h)) {
+					enemigo.vidas--;
+					sonido.danyo.play(10f);
+					if (enemigo.vidas == 0) {
+						caza.puntos++;
+						enemigo.explota = true;
+						enemigo.dead.activar();
+						sonido.explotar.play();
+						sonido.danyo.stop();
+					}
 					balasAEliminar.add(bala);
+					break;
 				}
 			}
-
-			if (pausa){
-				batch.setColor(1,1,1,0.25f);
-				bitmapFont.setColor(Color.BLUE);
-				sonido.music.pause();
-			}else{
-				batch.setColor(1,1,1,1f);
-				bitmapFont.setColor(Color.WHITE);
-				sonido.music.play();
-			}
-
-			for (Bala bala : balasAEliminar) caza.balas.remove(bala);
-			for (Enemigo enemigo : enemigosAEliminar) enemigos.remove(enemigo);
-			for (Enemigo2 enemigo2 : enemigosAEliminar2) enemigos2.remove(enemigo2);
-			for (Enemigo3 enemigo3 : enemigosAEliminar3) enemigos3.remove(enemigo3);
-			balasAEliminar.clear();
-			enemigosAEliminar.clear();
-
-			if(gameover) {
-				sonido.music.stop();
-				sonido.gameover.play();
-				int result = scoreboard.update(caza.puntos);
-				if(result == 1) {
-					inicializarJuego();
-				} else if (result == 2) {
-					Gdx.app.exit();
+			if (!gameover && !caza.muerta && Utils.solapan(enemigo.x, enemigo.y, enemigo.w, enemigo.h, caza.x, caza.y, caza.w, caza.h)) {
+				caza.morir();
+				enemigosAEliminar.add(enemigo);
+				if (caza.vidas == 0) {
+					gameover = true;
 				}
 			}
+			if (enemigo.y < -80) enemigosAEliminar.add(enemigo);
+			if (enemigo.x < -20) enemigo.x = 1020;
+			if (enemigo.x > 1040) enemigo.x = -20;
+			if (enemigo.explota && enemigo.dead.suena()){
+				enemigosAEliminar.add(enemigo);
+			}
+		}
+		for (Enemigo2 enemigo2 : enemigos2) {
+			for (Bala bala : caza.balas) {
+				if (Utils.solapan(bala.x, bala.y, bala.w, bala.h, enemigo2.x, enemigo2.y, enemigo2.w, enemigo2.h)) {
+					enemigo2.vidas--;
+					sonido.danyo.play(10f);
+					if (enemigo2.vidas == 0) {
+						enemigo2.explota = true;
+						enemigo2.dead.activar();
+						caza.puntos += 2;
+						sonido.explotar.play();
+						sonido.danyo.stop();
+					}
+					balasAEliminar.add(bala);
+					break;
+				}
+			}
+			if (!gameover && !caza.muerta && Utils.solapan(enemigo2.x, enemigo2.y, enemigo2.w, enemigo2.h, caza.x, caza.y, caza.w, caza.h)) {
+				caza.morir();
+				enemigosAEliminar2.add(enemigo2);
+				if (caza.vidas == 0) {
+					gameover = true;
+				}
+			}
+			if (enemigo2.y < -80) enemigosAEliminar2.add(enemigo2);
+			if (enemigo2.x < -20) enemigo2.x = 1020;
+			if (enemigo2.x > 1040) enemigo2.x = -20;
+			if (enemigo2.explota && enemigo2.dead.suena()){
+				enemigosAEliminar2.add(enemigo2);
+			}
+		}
+		for (Enemigo3 enemigo3 : enemigos3) {
+			for (Bala bala : caza.balas) {
+				if (Utils.solapan(bala.x, bala.y, bala.w, bala.h, enemigo3.x, enemigo3.y, enemigo3.w, enemigo3.h)) {
+					enemigo3.vidas--;
+					sonido.danyo.play(10f);
+					if (enemigo3.vidas == 0) {
+						enemigo3.explota = true;
+						enemigo3.dead.activar();
+						caza.puntos += 4;
+						sonido.explotar.play();
+						sonido.danyo.stop();
+					}
+					balasAEliminar.add(bala);
+					break;
+				}
+			}
+			if (!gameover && !caza.muerta && Utils.solapan(enemigo3.x, enemigo3.y, enemigo3.w, enemigo3.h, caza.x, caza.y, caza.w, caza.h)) {
+				caza.morir();
+				enemigosAEliminar3.add(enemigo3);
+				if (caza.vidas == 0) {
+					gameover = true;
+				}
+			}
+			if (enemigo3.y < -80) enemigosAEliminar3.add(enemigo3);
+			if (enemigo3.x < -20) enemigo3.x = 1020;
+			if (enemigo3.x > 1040) enemigo3.x = -20;
+			if (enemigo3.explota && enemigo3.dead.suena()){
+				enemigosAEliminar3.add(enemigo3);
+			}
+		}
+		for (Bala bala : caza.balas) {
+			if (bala.y > 590) {
+				balasAEliminar.add(bala);
+			}
+		}
+
+		if (pausa){
+			batch.setColor(1,1,1,0.25f);
+			bitmapFont.setColor(Color.BLUE);
+			sonido.music.pause();
+		}else{
+			batch.setColor(1,1,1,1f);
+			bitmapFont.setColor(Color.WHITE);
+			sonido.music.play();
+		}
+
+		for (Bala bala : balasAEliminar) caza.balas.remove(bala);
+		for (Enemigo enemigo : enemigosAEliminar) enemigos.remove(enemigo);
+		for (Enemigo2 enemigo2 : enemigosAEliminar2) enemigos2.remove(enemigo2);
+		for (Enemigo3 enemigo3 : enemigosAEliminar3) enemigos3.remove(enemigo3);
+		balasAEliminar.clear();
+		enemigosAEliminar.clear();
+
+		if(gameover) {
+			sonido.music.stop();
+			sonido.gameover.play();
+			int result = scoreboard.update(caza.puntos);
+			if(result == 1) {
+				inicializarJuego();
+			} else if (result == 2) {
+				Gdx.app.exit();
+			}
+		}
 	}
 	@Override
 	public void render () {
