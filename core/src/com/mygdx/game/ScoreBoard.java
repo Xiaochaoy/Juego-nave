@@ -143,6 +143,5 @@ public class ScoreBoard {
             ordenar.add(scoreList.get(p));
             scoreList.remove(p);
         }
-
     }
 }
